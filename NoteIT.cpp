@@ -22,6 +22,8 @@ int main()
 
     string DirContent[100];
     int PatchAmount = 0;
+    
+    char SelPatchChar[5], *end;
     int SelPatch = 0;
 
     while (true)
@@ -34,7 +36,7 @@ int main()
         {
             FileName = FileName + FilePatch[Counter];
         }
-        printf("%s", FileName.c_str());
+        printf("\033[1;37;44m %s \033[0m", FileName.c_str());
         printf("\n\r");
 
         /* количество эллементов папки и выравнивание */
@@ -56,7 +58,25 @@ int main()
         }
 
         printf("\n\rSelect file or folder: ");
-        scanf("%d", &SelPatch);
+        scanf("%s", SelPatchChar);
+
+        if (strtol(SelPatchChar, &end, 10))
+        {
+            SelPatch = strtol(SelPatchChar, &end, 10);
+        }
+        else
+        {
+            /* чтение команды -q */
+            if (SelPatchChar[0] == (char)'q')
+            {
+                FilePatchCounter = 0;
+            }
+            else
+            {
+                /* покидаем папку или файл без расширения */
+                continue;
+            }
+        }
 
         /* проверка на максимальное число */
         if ((PatchAmount > SelPatch) && (SelPatch >= 0))
