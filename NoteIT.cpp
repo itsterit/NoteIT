@@ -28,6 +28,8 @@ int main()
 
     bool OpenFile = 0;
 
+    short MaxNumLen = 0;
+
     while (true)
     {
         system("cls");
@@ -38,9 +40,9 @@ int main()
         {
             FileName = FileName + FilePatch[Counter];
         }
-        printf("\033[1;37;44m %s \033[0m", FileName.c_str());
-        printf("\n\r");
+        printf("\033[1;37;44m %s \033[0m\n\n\r", FileName.c_str());
 
+        /* просмотр файла */
         if (OpenFile == 1)
         {
             FILE* fp;
@@ -52,15 +54,42 @@ int main()
             {
                 /* открытие файла */
                 char Buffer[256] = { 0 };
+                char NumLen[3] = { 0 };
+                MaxNumLen = 0;
+
                 for (uint32_t StrCounter = 0; (fgets(Buffer, sizeof(Buffer), fp)) != NULL; StrCounter++)
+                {
+                    sprintf(NumLen, "%d", StrCounter);
+                    if (MaxNumLen < strlen(NumLen))
+                    {
+                        MaxNumLen = strlen(NumLen);
+                    }
+                }
+
+                fp = fopen(FileName.c_str(), "r");
+                memset(Buffer, 0, sizeof(Buffer));
+
+                for (uint32_t StrCounter = 0, HeaderCounter = 0; (fgets(Buffer, sizeof(Buffer), fp)) != NULL; StrCounter++)
                 {
                     /* просмотр заголовка */
                     if (Buffer[0] == (char)'#')
                     {
-                        printf("%d) ", StrCounter);
-                        for (uint32_t CharCounter = 0; CharCounter <= strlen(Buffer); CharCounter++)
+                        HeaderCounter++;
+                        if (SelPatch == HeaderCounter || !SelPatch)
                         {
-                            printf("%c", Buffer[CharCounter + 1]);
+                            /* выравнивание */
+                            printf("%d)", HeaderCounter);
+                            sprintf(NumLen, "%d", HeaderCounter);
+                            for (uint8_t AlignmentCounter = ((MaxNumLen + 1) - strlen(NumLen)); AlignmentCounter; AlignmentCounter--)
+                            {
+                                printf(" ");
+                            }
+
+                            /* заголовок */
+                            for (uint32_t CharCounter = 0; CharCounter <= strlen(Buffer); CharCounter++)
+                            {
+                                printf("%c", Buffer[CharCounter + 1]);
+                            }
                         }
                     }
                 }
@@ -73,7 +102,7 @@ int main()
             PatchAmount = SerchDir(&DirContent[0], &FileName);
             char NumLen[3] = { 0 };
             sprintf(NumLen, "%d", PatchAmount);
-            short MaxNumLen = strlen(NumLen);
+            MaxNumLen = strlen(NumLen);
 
             /* вывод содержимого */
             for (uint8_t PatchCounter = 0; PatchCounter < PatchAmount; PatchCounter++)
@@ -113,53 +142,61 @@ int main()
                 }
                 else
                 {
-                    /* покидаем папку или файл без расширения */
-                    continue;
+                    if (SelPatchChar[0] == (char)'b' || SelPatchChar[0] == (char)'B')
+                    {
+                        SelPatch = 0;
+                    }
+                    else
+                    {
+                        /* покидаем папку или файл без расширения */
+                        continue;
+                    }
                 }
             }
         }
 
-        /* проверка на максимальное число */
-        if ((PatchAmount > SelPatch) && (SelPatch >= 0))
+        /* запрет на редактирование пути, если открыт файл */
+        if (OpenFile == 0)
         {
-            /* запрет на редактирование пути, если открыт файл */
-            if (OpenFile == 0)
+            /* проверка на максимальное число */
+            if ((PatchAmount > SelPatch) && (SelPatch >= 0))
             {
-                /* переход или открытие */
-                short FolderOrFile = DirContent[SelPatch].find(".");
-                if (FolderOrFile == 0)
-                {
-                    /* это комманда */
-                    FolderOrFile = DirContent[SelPatch].find("..");
-                    if (FolderOrFile == 0)
-                    {
-                        /* назад в директорию */
-                        if (FilePatchCounter)
-                        {
-                            FilePatchCounter--;
-                        }
-                    }
-                    else
-                    {
-                        /* остаёмся в директории */
-                    }
-                }
-                else
-                {
-                    if (FolderOrFile < 0)
-                    {
-                        /* это папка */
-                        FilePatchCounter++;
-                        FilePatch[FilePatchCounter] = "\\" + DirContent[SelPatch];
-                    }
-                    else
-                    {
-                        /* это файл */
-                        OpenFile = 1;
-                        FilePatchCounter++;
-                        FilePatch[FilePatchCounter] = "\\" + DirContent[SelPatch];
-                    }
-                }
+                 /* переход или открытие */ 
+                 short FolderOrFile = DirContent[SelPatch].find(".");
+                 if (FolderOrFile == 0)
+                 {
+                     /* это комманда */
+                     FolderOrFile = DirContent[SelPatch].find("..");
+                     if (FolderOrFile == 0)
+                     {
+                         /* назад в директорию */
+                         if (FilePatchCounter)
+                         {
+                             FilePatchCounter--;
+                         }
+                     }
+                     else
+                     {
+                         /* остаёмся в директории */
+                     }
+                 }
+                 else
+                 {
+                     if (FolderOrFile < 0)
+                     {
+                         /* это папка */
+                         FilePatchCounter++;
+                         FilePatch[FilePatchCounter] = "\\" + DirContent[SelPatch];
+                     }
+                     else
+                     {
+                         /* это файл */
+                         OpenFile = 1;
+                         FilePatchCounter++;
+                         FilePatch[FilePatchCounter] = "\\" + DirContent[SelPatch];
+                         SelPatch = 0;
+                     }
+                 }
             }
         }
     }
