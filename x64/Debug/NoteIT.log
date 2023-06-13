@@ -1,8 +1,8 @@
 ﻿  NoteIT.cpp
-C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(65,51): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
-C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(83,29): warning C4267: инициализация: преобразование из "size_t" в "uint8_t"; возможна потеря данных
-C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(105,39): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
-C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(112,17): warning C4267: инициализация: преобразование из "size_t" в "uint8_t"; возможна потеря данных
-C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(165,69): warning C4267: инициализация: преобразование из "size_t" в "short"; возможна потеря данных
-C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(169,68): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
+C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(66,51): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
+C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(90,33): warning C4267: инициализация: преобразование из "size_t" в "uint8_t"; возможна потеря данных
+C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(121,39): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
+C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(128,17): warning C4267: инициализация: преобразование из "size_t" в "uint8_t"; возможна потеря данных
+C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(183,69): warning C4267: инициализация: преобразование из "size_t" в "short"; возможна потеря данных
+C:\Users\itste\source\repos\NoteIT\NoteIT.cpp(187,68): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
   NoteIT.vcxproj -> C:\Users\itste\source\repos\NoteIT\x64\Debug\NoteIT.exe

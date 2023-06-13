@@ -27,6 +27,7 @@ int main()
     int SelPatch = 0;
 
     bool OpenFile = 0;
+    bool PrintItem = 0;
 
     short MaxNumLen = 0;
 
@@ -74,22 +75,37 @@ int main()
                     /* просмотр заголовка */
                     if (Buffer[0] == (char)'#')
                     {
+                        PrintItem = 0;
                         HeaderCounter++;
+
                         if (SelPatch == HeaderCounter || !SelPatch)
                         {
-                            /* выравнивание */
-                            printf("%d)", HeaderCounter);
-                            sprintf(NumLen, "%d", HeaderCounter);
-                            for (uint8_t AlignmentCounter = ((MaxNumLen + 1) - strlen(NumLen)); AlignmentCounter; AlignmentCounter--)
+                            PrintItem = 1;
+
+                            if (!SelPatch)
                             {
-                                printf(" ");
+                                /* выравнивание */
+                                printf("%d)", HeaderCounter);
+                                sprintf(NumLen, "%d", HeaderCounter);
+                                for (uint8_t AlignmentCounter = ((MaxNumLen + 1) - strlen(NumLen)); AlignmentCounter; AlignmentCounter--)
+                                {
+                                    printf(" ");
+                                }
                             }
 
                             /* заголовок */
-                            for (uint32_t CharCounter = 0; CharCounter <= strlen(Buffer); CharCounter++)
+                            for (uint32_t CharCounter = 1; CharCounter <= strlen(Buffer); CharCounter++)
                             {
-                                printf("%c", Buffer[CharCounter + 1]);
+                                printf("%c", Buffer[CharCounter]);
                             }
+                        }
+                    }
+                    else
+                    {
+                        if (PrintItem && SelPatch)
+                        {
+                            /* содержимое заголовка */
+                            printf("%s", Buffer);
                         }
                     }
                 }
@@ -117,7 +133,7 @@ int main()
             }
         }
 
-        printf("\n\r> ");
+        printf("> ");
         scanf("%s", SelPatchChar);
 
         if (strtol(SelPatchChar, &end, 10))
@@ -147,8 +163,10 @@ int main()
                         SelPatch = 0;
                     }
                     else
-                    {
-                        /* покидаем папку или файл без расширения */
+                    {   
+                        // printf("e - exit \n\r");
+                        // printf("b - break \n\r");
+                        // printf("q - exit \n\r");
                         continue;
                     }
                 }
@@ -202,5 +220,5 @@ int main()
     }
 
 
-    scanf("%d", &PatchAmount);
+    return 0;
 }
