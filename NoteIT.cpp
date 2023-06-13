@@ -6,6 +6,8 @@
 #include <string.h>
 #include <iostream>
 #include "SearchDir.h"
+#include <fstream>
+#include <windows.h>
 using namespace std;
 
 int main()
@@ -49,6 +51,7 @@ int main()
             FILE* fp;
             if ((fp = fopen(FileName.c_str(), "r")) == NULL)
             {
+                OpenFile = 0;
                 printf("Не удалось открыть файл!");
             }
             else
@@ -164,10 +167,46 @@ int main()
                     }
                     else
                     {   
-                        // printf("e - exit \n\r");
-                        // printf("b - break \n\r");
-                        // printf("q - exit \n\r");
-                        continue;
+                        if (SelPatchChar[0] == (char)'a' || SelPatchChar[0] == (char)'A' || SelPatchChar[0] == (char)'а' || SelPatchChar[0] == (char)'А')
+                        {
+                            if (OpenFile)
+                            {
+                                char   NewItemName[20] = {0};
+                                string NewItemMSG;
+
+                                printf("\n\rItem name> ");
+                                scanf("%s", NewItemName);
+                                             
+                                printf("Item msng: \n\n\r");
+                                for (;;)
+                                {
+                                    char ItemMSG = cin.get();
+                                    if (ItemMSG == (char)'b' || ItemMSG == (char)'B' || ItemMSG == (char)'б' || ItemMSG == (char)'Б')
+                                    {
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        NewItemMSG = NewItemMSG + ItemMSG;
+                                    }
+                                }
+
+                                /* добавит запись */
+                                ofstream out(FileName, ios::app);
+                                if (out.is_open())
+                                {
+                                    out << "#" << NewItemName << NewItemMSG <<"\n\r";
+                                }
+                                out.close();
+                            }
+                        }
+                        else
+                        {
+                            // printf("e - exit \n\r");
+                            // printf("b - break \n\r");
+                            // printf("q - exit \n\r");
+                            continue;
+                        }
                     }
                 }
             }
